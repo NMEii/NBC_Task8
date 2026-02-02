@@ -77,7 +77,7 @@ void AMyGameState::StartLevel()
 	TArray<AActor*> FoundVolumes;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundVolumes);
 
-	const int32 ItemToSpawn = (10 * (CurrentLevelIndex + 1)) + (3 * (CurrentWaveIndex + 1));
+	const int32 ItemToSpawn = (10 * (CurrentLevelIndex + 1)) + (3 * CurrentWaveIndex);
 
 	if (FoundVolumes.Num() > 0)
 	{
