@@ -1,5 +1,5 @@
 #include "CoinItem.h"
-
+#include "MyGameState.h"
 ACoinItem::ACoinItem()
 {
 	PointValue = 50;
@@ -8,9 +8,17 @@ ACoinItem::ACoinItem()
 
 void ACoinItem::ActivateItem(AActor* Activator)
 {
+	Super::ActivateItem(Activator);
 	if (Activator && Activator->ActorHasTag("Player"))
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Point %d"), PointValue));
+		if (UWorld* World = GetWorld())
+		{
+			if (AMyGameState* GameState = World->GetGameState<AMyGameState>())
+			{
+				GameState->AddScore(PointValue);
+				GameState->OnCoinCollected();
+			}
+		}
 		DestroyItem();
 	}
 }

@@ -1,5 +1,7 @@
 #include "BaseItem.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/SphereComponent.h"
+#include "Particles/ParticleSystemComponent.h"
 
 ABaseItem::ABaseItem()
 {
@@ -31,7 +33,6 @@ void ABaseItem::OnOverlapItem(
 	if (OtherActor && OtherActor->ActorHasTag("Player"))
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Overlap!!!")));
-		// 아이템 사용 (획득) 로직 호출
 		ActivateItem(OtherActor);
 	}
 }
@@ -47,7 +48,27 @@ void ABaseItem::OnEndOverlapItem(
 
 void ABaseItem::ActivateItem(AActor* Activater)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Overlap!")));
+	UParticleSystemComponent* Particle = nullptr;
+
+	if (PickupParticle)
+	{
+		Particle = UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			PickupParticle,
+			GetActorLocation(),
+			GetActorRotation(),
+			true
+		);
+	}
+
+	if (PickUpSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			GetWorld(),
+			PickUpSound,
+			GetActorLocation()
+		);
+	}
 }
 
 FName ABaseItem::GetItemType() const
@@ -58,4 +79,6 @@ FName ABaseItem::GetItemType() const
 void ABaseItem::DestroyItem()
 {
 	Destroy();
+
+	UParticleSystemComponent* Particle = nullptr;
 }

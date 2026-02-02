@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "ItemSpawnRow.h"
 #include "GameFramework/Actor.h"
 #include "SpawnVolume.generated.h"
 
@@ -23,11 +24,22 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Spawning")
 	TObjectPtr<UBoxComponent> SpawningBox;
 
-	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	FVector GetRandomPointInVolume() const;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spawning")
+	TArray<UDataTable*> ItemDataTable;
+
+	UPROPERTY()
+	TArray<AActor*> SpawnActors;
 
 	UFUNCTION(BlueprintCallable, Category = "Spawning")
-	void SpawnItem(TSubclassOf<AActor> ItemClass);
+	void ClearItems();
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	AActor* SpawnRandomItem();
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	FVector GetRandomPointInVolume() const;
+	UFUNCTION(BlueprintCallable, Category = "Spawning")
+	AActor* SpawnItem(TSubclassOf<AActor> ItemClass);
+
+	FItemSpawnRow* GetRandomItem() const;
 
 
 };

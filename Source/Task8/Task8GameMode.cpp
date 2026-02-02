@@ -2,6 +2,7 @@
 
 #include "Task8GameMode.h"
 #include "Task8Character.h"
+#include "MyGameState.h"
 #include "UObject/ConstructorHelpers.h"
 
 ATask8GameMode::ATask8GameMode()
@@ -12,4 +13,6 @@ ATask8GameMode::ATask8GameMode()
 	{
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 	}
+
+	GameStateClass = AMyGameState::StaticClass();
 }
